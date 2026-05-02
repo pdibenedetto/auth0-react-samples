@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.14 as build
+FROM node:lts-alpine3.20 AS build
 
 RUN apk update && \
   apk upgrade && \
@@ -10,19 +10,28 @@ WORKDIR /app
 
 COPY package.json .
 
-RUN npm install -g --force npm@latest typescript@latest yarn@latest
+RUN npm install -g --force npm@latest
 
-RUN yarn install
+RUN npm install
 
 COPY . .
 
-RUN yarn build
+ARG AUTH0_DOMAIN
+ARG AUTH0_CLIENT_ID
+ARG AUTH0_AUDIENCE
+ARG API_BASE_URL
+
+RUN AUTH0_DOMAIN=${AUTH0_DOMAIN} \
+  AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID} \
+  AUTH0_AUDIENCE=${AUTH0_AUDIENCE} \
+  API_BASE_URL=${API_BASE_URL} \
+  npm run build
 
 # ---------------
 
-FROM node:lts-alpine3.14
+FROM node:lts-alpine3.20
 
-RUN mkdir -p /app/build
+RUN mkdir -p /app/dist
 
 RUN apk update && \
   apk upgrade && \
@@ -32,10 +41,9 @@ WORKDIR /app
 
 COPY --from=build /app/package.json .
 
-RUN yarn install --production
+RUN npm install --omit=dev
 
-COPY --from=build /app/build ./build
-COPY --from=build /app/src/auth_config.json ./src/auth_config.json
+COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.js .
 COPY --from=build /app/api-server.js .
 
@@ -44,6 +52,6 @@ EXPOSE 3001
 
 ENV SERVER_PORT=3000
 ENV API_PORT=3001
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
-CMD ["yarn", "prod"]
+CMD ["npm", "run", "prod"]

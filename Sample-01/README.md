@@ -1,6 +1,6 @@
 # Auth0 React SDK Sample Application
 
-This sample demonstrates the integration of [Auth0 React SDK](https://github.com/auth0/auth0-react) into a React application created using [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html). The sample is a companion to the [Auth0 React SDK Quickstart](https://auth0.com/docs/quickstart/spa/react).
+This sample demonstrates the integration of [Auth0 React SDK](https://github.com/auth0/auth0-react) into a React application created using [Vite](https://vite.dev). The sample is a companion to the [Auth0 React SDK Quickstart](https://auth0.com/docs/quickstart/spa/react).
 
 This sample demonstrates the following use cases:
 
@@ -12,37 +12,36 @@ This sample demonstrates the following use cases:
 
 ## Project setup
 
-Use `yarn` to install the project dependencies:
+Use `npm` to install the project dependencies:
 
 ```bash
-yarn install
+npm install
 ```
 
 ## Configuration
 
 ### Create an API
 
-For the ["call an API"](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api) page to work, you will need to [create an API](https://auth0.com/docs/apis) using the [management dashboard](https://manage.auth0.com/#/apis). This will give you an API identifier that you can use in the `audience` configuration field below.
+For the ["call an API"](https://auth0.com/docs/quickstart/spa/react/02-calling-an-api) page to work, you will need to [create an API](https://auth0.com/docs/apis) using the [management dashboard](https://manage.auth0.com/#/apis). This will give you an API identifier that you can use as the `AUTH0_AUDIENCE` environment variable below.
 
-If you do not wish to use an API or observe the API call working, you should not specify the `audience` value in the next step. Otherwise, you will receive a "Service not found" error when trying to authenticate.
+If you do not wish to use an API or observe the API call working, you should not specify the `AUTH0_AUDIENCE` environment variable in the next step. Otherwise, you will receive a "Service not found" error when trying to authenticate.
 
 ### Configure credentials
 
 The project needs to be configured with your Auth0 domain and client ID in order for the authentication flow to work.
 
-To do this, first copy `src/auth_config.json.example` into a new file in the same folder called `src/auth_config.json`, and replace the values with your own Auth0 application credentials, and optionally the base URLs of your application and API:
+To do this, first copy `.env.example` into a new file in the same folder called `.env.local`, and replace the values with your own Auth0 application credentials, and optionally the base URLs of your application and API:
 
-```json
-{
-  "domain": "{YOUR AUTH0 DOMAIN}",
-  "clientId": "{YOUR AUTH0 CLIENT ID}",
-  "audience": "{YOUR AUTH0 API_IDENTIFIER}",
-  "appOrigin": "{OPTIONAL: THE BASE URL OF YOUR APPLICATION (default: http://localhost:3000)}",
-  "apiOrigin": "{OPTIONAL: THE BASE URL OF YOUR API (default: http://localhost:3001)}"
-}
+```bash
+AUTH0_DOMAIN=your-tenant.us.auth0.com
+AUTH0_CLIENT_ID=your-client-id
+# AUTH0_AUDIENCE=your-api-identifier # optional, only needed for the External API feature
+
+# APP_BASE_URL=https://your-app.com # optional, defaults work fine for local development
+# API_BASE_URL=https://your-api-server.com # optional, defaults work fine for local development
 ```
 
-**Note**: Do not specify a value for `audience` here if you do not wish to use the API part of the sample.
+**Note**: Do not specify a value for `AUTH0_AUDIENCE` here if you do not wish to use the API part of the sample.
 
 ## Run the sample
 
@@ -51,7 +50,7 @@ To do this, first copy `src/auth_config.json.example` into a new file in the sam
 This compiles and serves the React app and starts the backend API server on port 3001.
 
 ```bash
-yarn run dev
+npm run dev
 ```
 
 ## Deployment
@@ -59,7 +58,7 @@ yarn run dev
 ### Compiles and minifies for production
 
 ```bash
-yarn run build
+npm run build
 ```
 
 ### Docker build
@@ -69,7 +68,7 @@ To build and run the Docker image, run `exec.sh`, or `exec.ps1` on Windows.
 ### Run your tests
 
 ```bash
-yarn run test
+npm test
 ```
 
 ## Frequently Asked Questions
@@ -80,12 +79,12 @@ If you're having issues running the sample applications, including issues such a
 
 Auth0 helps you to:
 
-* Add authentication with [multiple sources](https://auth0.com/docs/identityproviders), either social identity providers such as **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, Salesforce** (amongst others), or enterprise identity systems like **Windows Azure AD, Google Apps, Active Directory, ADFS, or any SAML Identity Provider**.
-* Add authentication through more traditional **[username/password databases](https://auth0.com/docs/connections/database/custom-db)**.
-* Add support for **[linking different user accounts](https://auth0.com/docs/users/user-account-linking)** with the same user.
-* Support for generating signed [JSON Web Tokens](https://auth0.com/docs/tokens/json-web-tokens) to call your APIs and **flow the user identity** securely.
-* Analytics of how, when, and where users are logging in.
-* Pull data from other sources and add it to the user profile through [JavaScript rules](https://auth0.com/docs/rules).
+- Add authentication with [multiple sources](https://auth0.com/docs/identityproviders), either social identity providers such as **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, Salesforce** (amongst others), or enterprise identity systems like **Windows Azure AD, Google Apps, Active Directory, ADFS, or any SAML Identity Provider**.
+- Add authentication through more traditional **[username/password databases](https://auth0.com/docs/connections/database/custom-db)**.
+- Add support for **[linking different user accounts](https://auth0.com/docs/users/user-account-linking)** with the same user.
+- Support for generating signed [JSON Web Tokens](https://auth0.com/docs/tokens/json-web-tokens) to call your APIs and **flow the user identity** securely.
+- Analytics of how, when, and where users are logging in.
+- Pull data from other sources and add it to the user profile through [JavaScript rules](https://auth0.com/docs/rules).
 
 ## Create a Free Auth0 Account
 

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Button, Alert } from "reactstrap";
+import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 import Highlight from "../components/Highlight";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { getConfig } from "../config";
 import Loading from "../components/Loading";
 
 export const ExternalApiComponent = () => {
-  const { apiOrigin = "http://localhost:3001", audience } = getConfig();
+  const { apiOrigin, audience } = getConfig();
 
   const [state, setState] = useState({
     showResult: false,
@@ -85,11 +86,11 @@ export const ExternalApiComponent = () => {
     <>
       <div className="mb-5">
         {state.error === "consent_required" && (
-          <Alert color="warning">
+          <Alert variant="warning">
             You need to{" "}
             <a
               href="#/"
-              class="alert-link"
+              className="alert-link"
               onClick={(e) => handle(e, handleConsent)}
             >
               consent to get access to users api
@@ -98,11 +99,11 @@ export const ExternalApiComponent = () => {
         )}
 
         {state.error === "login_required" && (
-          <Alert color="warning">
+          <Alert variant="warning">
             You need to{" "}
             <a
               href="#/"
-              class="alert-link"
+              className="alert-link"
               onClick={(e) => handle(e, handleLoginAgain)}
             >
               log in again
@@ -123,7 +124,7 @@ export const ExternalApiComponent = () => {
         </p>
 
         {!audience && (
-          <Alert color="warning">
+          <Alert variant="warning">
             <p>
               You can't call the API at the moment because your application does
               not have any configuration for <code>audience</code>, or it is
@@ -153,23 +154,22 @@ export const ExternalApiComponent = () => {
             </p>
             <ul>
               <li>
-                in the <code>src/index.js</code> file
+                by exposing the <code>AUTH0_AUDIENCE</code> environment variable to the application
               </li>
               <li>
-                by specifying it in the <code>auth_config.json</code> file (see
-                the <code>auth_config.json.example</code> file for an example of
-                where it should go)
+                by setting <code>AUTH0_AUDIENCE</code> in your <code>.env.local</code> file
+                (see <code>.env.example</code> for reference)
               </li>
             </ul>
             <p>
-              Once you have configured the value for <code>audience</code>,
+              Once you have configured the value for <code>AUTH0_AUDIENCE</code>,
               please restart the app and try to use the "Ping API" button below.
             </p>
           </Alert>
         )}
 
         <Button
-          color="primary"
+          variant="primary"
           className="mt-5"
           onClick={callApi}
           disabled={!audience}
